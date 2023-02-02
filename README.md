@@ -1,5 +1,3 @@
 # Kontro
 
-Sistema de gerenciamento de parâmetros das URAs da Oi 
-
-"# kontro" 
+Sistema gerenciamento de áudios para URA
