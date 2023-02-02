@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body th:fragment="content">
+	<div class="container" style="padding-top: 10px;">
+
+		<div>
+			<div class="navbar-text pull-left">
+				<button type="button" class="btn btn-outline-dark btn-abrir-modal"
+					th:data-modal-dir="addParametro"
+					th:data-modal-url="${@paths.PARAMETROS+@paths.ADD}+@{/}+${server}+@{/}+${app}"
+					th:data-modal-app="${app}">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i> <span
+						th:text="#{btnAddParametro}"></span>
+				</button>
+				<a type="button" href="#"
+					th:href="${@paths.PARAMETROS+@paths.DOWNLOAD}+@{/}+${server}+@{/}+${app}"
+					class="btn btn-outline-dark"><i class="fa fa-download"
+					aria-hidden="true"></i> <span
+					th:text="#{btnExportarParametro}"></span></a>
+			</div>
+			<div
+				th:replace="${@paths.COMPONENTS} :: ${@fragments.FILTRAR_TABELA}">
+			</div>
+		</div>
+
+		<table id="parametros-table" data-order="[[ 0, &quot;desc&quot; ]]"
+			data-processing="true" data-server-side="true" data-pageLength="10"
+			data-scroll-y="350" data-scroll-x="true" data-dom="rt<'bottom'ip>"
+			class="table w-auto table-sm table-striped"
+			style="font-size: 13.5px; padding-top: 10px;">
+			<thead>
+				<tr>
+					<th th:text="#{headerCellNomeParametro}"/>
+					<th th:text="#{headerCellValorParametro}"/>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+
+	</div>
+	<script th:inline="javascript">
+	 	var titleBtnEditarParametro = [[#{titleBtnEditarParametro}]];
+		var titleBtnRemoverParametro = [[#{titleBtnDeletarParametro}]];
+		var urlEditar = [[${@paths.PARAMETROS+@paths.EDIT}+@{/}+${server}+@{/}+${app}]];
+		var urlDelete = [[${@paths.PARAMETROS+@paths.DELETE}+@{/}+${server}+@{/}+${app}]];
+	</script>
+	<script type="text/javascript" th:src="@{/js/view-parametros.js}"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body th:fragment="footer">
+	<nav
+		class="navbar fixed-bottom navbar-expand-lg navbar-light d-flex justify-content-center">
+		<div>
+			<img th:src="@{/img/logo_nttdata_01.svg}" alt="Kontro-logo"
+				width="80" height="32"> <img th:src="@{/img/oi-logo-j5.png}"
+				alt="Kontro-logo" width="60" height="32"> <span
+				class="mb-3 mb-md-0 text-muted"
+				th:text="#{footerViewMsgCopyright(${#dates.format(#dates.createNow(), 'yyyy')})}"></span>
+		</div>
+	</nav>
+</body>
+</html>

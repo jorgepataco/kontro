@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+<body th:fragment="content">
+	<main class="container">
+	<div class="row">
+		<div class="col-lg-4" style="margin-bottom: 15px; margin-top: 20px;"
+			th:each="produto, iter: ${@headerInfo.getProdutos()}">
+			<div class="card shadow-sm">
+				<div class="card-body">
+					<h5 class="card-title">
+						<span class="theme-icon-holder card-icon-holder mr-2"> <i
+							class="fa fa-audio-description"></i>
+						</span> <span class="card-title-text"
+							th:text="${#strings.toUpperCase(produto.label)}"></span>
+					</h5>
+
+					<hr class="mt-2 mb-3">
+
+					<div class="card-text">
+						<ul class="opcoes" th:each="servico, iter: ${produto.servicos}">
+							<li><a style="padding-right: 49px;"
+								th:text="${#strings.toUpperCase(servico.nome)}"></a><i
+								class="fa fa-angle-down color-green"></i>
+								<ul>
+									<li><a th:href="${server.path}"
+										th:each="server, iter: ${servico.servers}"
+										th:text="${#strings.toUpperCase(server.label)}"></a></li>
+								</ul></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	</main>
+</body>
+</html>

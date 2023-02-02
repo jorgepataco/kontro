@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<form id="form-escolher-tabelas" th:action="${@paths.TABELAS}" th:method="GET">
+		<div class="form-group row mb-2">
+			<label for="aplicacao"
+				class="col-sm-2 col-form-label font-weight-bold"
+				th:text="#{formLabelEscolherProdutoTabelas}"></label>
+			<div class="col-sm-9">
+				<select required="required" class="form-control selectpicker"
+					id="aplicacao">
+					<option value="" th:text="#{formSelecioneProduto}"></option>
+					<option th:each="app, iter: ${@appsTabelas}"
+						th:if="${app.servicos.size() > 0}" th:value="${app.nome}"
+						th:text="${app.label}"></option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row mb-2">
+			<label for="servers" class="col-sm-2 col-form-label font-weight-bold"
+				th:text="#{formLabelEscolherAmbienteTabelas}"></label>
+			<div class="col-sm-9">
+				<select required="required" class="form-control selectpicker"
+					id="servers">
+					<option value="" th:text="#{formSelecioneAmbiente}"></option>
+					<option th:each="server, iter: ${@serversTabelas}"
+						th:value="${server.value}" th:text="${server.key}"></option>
+				</select>
+			</div>
+		</div>
+		<div class="modal-footer d-flex">
+			<div class="justify-content-end">
+				<button type="button"
+					class="btn btn-secondary modal-kontro-btn-close"
+					data-dismiss="modal" th:text="#{btnCancelar}"></button>
+
+				<button type="submit" class="btn btn-primary" th:text="#{btnSalvar}"></button>
+			</div>
+		</div>
+	</form>
+
+	<script th:inline="javascript">
+		var MAPPING_TABELAS = /*[[${@paths.TABELAS}]]*/ "";
+	    $("select").change(function() {
+		    var action = MAPPING_TABELAS;
+		    _serverAction = "/"+$("#servers").val();
+		    _appAction = "/"+$("#aplicacao").val();
+		    
+		    $("#form-escolher-tabelas").attr("action", MAPPING_TABELAS+_serverAction+_appAction);
+	    });
+  	</script>
+</body>
+</html>

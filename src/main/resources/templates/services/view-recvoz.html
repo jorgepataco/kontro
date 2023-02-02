@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<style>
+.bs-example {
+	margin: 20px;
+}
+</style>
+</head>
+<body class="dinamico">
+	<div class="container" th:fragment="content" style="padding-top: 10px;">
+		<div class="scroller scroller-left">
+			<i class="far fa-arrow-alt-circle-left"></i>
+		</div>
+		<div class="scroller scroller-right">
+			<i class="far fa-arrow-alt-circle-right"></i>
+		</div>
+		<div class="bs-example">
+			<div class="wrapper"
+				style="height: 430px; padding-bottom: 10px; margin-bottom: 0px;">
+				<ul class="nav nav-tabs list">
+					<th:block th:each="tabelaRecvoz, iter : ${tabelasRecvoz}">
+						<li class="nav-item"><a
+							th:href="@{'#' + ${tabelaRecvoz.nomeTabela}}"
+							th:class="${iter.index == 0}? 'nav-link active': 'nav-link'"
+							data-toggle="tab" th:text="${tabelaRecvoz.nomeTabela}"></a></li>
+					</th:block>
+
+				</ul>
+				<div class="tab-content" style="height: 100px; margin-top: 36px;">
+
+					<th:block th:each="tabelaRecvoz, iter : ${tabelasRecvoz}">
+						<div
+							th:class="${iter.index == 0}? 'tab-pane fade show active': 'tab-pane fade'"
+							th:id="${tabelaRecvoz.nomeTabela}">
+							<table th:id="tabela_+${iter.index}"
+								class="table w-auto table-sm table-striped"
+								style="min-width: 1100px; font-size: 12.5px;">
+								<!-- Header Table -->
+								<thead>
+									<th th:if="${server == 'hml'}"></th>
+									<th:block th:each="coluna : ${tabelaRecvoz.colunas}">
+										<th style="min-width: 50%" th:text=${coluna.nomeColuna}></th>
+									</th:block>
+
+								</thead>
+								<tbody>
+									<th:block
+										th:each="i : ${#numbers.sequence(0, tabelaRecvoz.qtdLinhas-1, 1)}">
+										<tr th:id="${tabelaRecvoz.nomeTabela + '_' + i+1}"
+											class="unselected" th:data-rownum="${i+1}"
+											th:data-nomeTabela="${ tabelaRecvoz.nomeTabela}">
+											<td th:if="${server == 'hml'}" class="table-active"
+												style="white-space: nowrap">
+
+												<div class="text-center" style="width: 80px;">
+													<form class="navbar-form form-inline form-confirm d-none">
+														<button onclick="return false;"
+															th:data-id-tr="${tabelaRecvoz.nomeTabela + '_' + i+1}"
+															type="button" class="btn btn-primary btn-sm btn-ok">
+															<i class="fa fa-fw fa-check" aria-hidden="true"></i>
+														</button>
+														<button onclick="return false;"
+															th:data-id-tr="${tabelaRecvoz.nomeTabela + '_' + i+1}"
+															type="button" class="btn btn-warning btn-sm btn-cancel"
+															style="margin-left: 7px;">
+															<i class="fa fa-fw fa-times" aria-hidden="true"></i>
+														</button>
+													</form>
+
+													<form class="navbar-form form-inline form-edit">
+														<a href="#" onclick="return false;"
+															th:data-id-tr="${tabelaRecvoz.nomeTabela + '_' + i+1}"
+															class="btn btn-primary btn-sm btn-edit"
+															style="margin-left: 25px;"> <i class="fa fa-pencil"
+															aria-hidden="true"></i>
+														</a>
+													</form>
+												</div>
+
+											</td>
+											<th:block
+												th:each="j : ${#numbers.sequence(0, tabelaRecvoz.qtdColunas-1, 1)}">
+												<td
+													th:data-nomeColuna="${ tabelaRecvoz.colunas.get(j).nomeColuna}"
+													th:class="${tabelaRecvoz.colunas.get(j).valores.get(i) != null ? 'asset_value': 'asset_value td-null'}"
+													th:text="${ tabelaRecvoz.colunas.get(j).valores.get(i) != null} ? ${tabelaRecvoz.colunas.get(j).valores.get(i)} : ''"
+													style="white-space: nowrap" />
+											</th:block>
+
+										</tr>
+
+									</th:block>
+
+
+								</tbody>
+							</table>
+						</div>
+					</th:block>
+				</div>
+			</div>
+		</div>
+		<script th:inline="javascript">
+            var server = [[${server}]];
+            var app = [[${app}]];
+            var appName = [[${getAppName}]];
+            var URL_UPDATE_RECVOZ = [[${@paths.RECVOZ}]]+"/"+server+"/"+app;
+            
+          var table =  $('table.table').DataTable( {
+        	  "scrollY": 350,
+        	  "paging": false,
+     	 		"autoWidth": true,
+  			"fixedHeader": false,
+     	        "scrollX": true,
+     	    	 "dom": 'rtip'
+     	    
+       	    	 
+            } );
+          
+          $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        	         	  
+              $.fn.dataTable.tables( {visible: true, api: true} ).
+              	columns.adjust().fixedColumns().relayout();
+          } );
+          
+          
+          
+          
+      	/*SCROOLING*/
+      	
+      	var hidWidth;
+      var scrollBarWidths = 40;
+
+      var widthOfList = function(){
+        var itemsWidth = 0;
+        $('.list li').each(function(){
+          var itemWidth = $(this).outerWidth();
+          itemsWidth+=itemWidth;
+        });
+        return itemsWidth;
+      };
+
+      var widthOfHidden = function(){
+        return (($('.wrapper').outerWidth())-widthOfList()-getLeftPosi())-scrollBarWidths;
+      };
+
+      var getLeftPosi = function(){
+    	  console.log("Posição left: "+$('.list').position().left);
+        return $('.list').position().left;
+      };
+
+      var reAdjust = function(){
+        if (($('.wrapper').outerWidth()) < widthOfList()) {
+          $('.scroller-right').show();
+          $('.scroller-left').show();
+        }
+        else {
+          $('.scroller-right').hide();
+          $('.scroller-left').hide();
+        }
+        
+       /*  if (getLeftPosi()>=0) {
+          $('.scroller-left').hide();
+        }
+        else  */
+        if(getLeftPosi()<0){
+/*           $('.item').animate({left:"-="+getLeftPosi()+"px"},'slow');
+ */        	$('.scroller-left').show();
+        }
+      }
+
+      reAdjust();
+
+      $(window).on('resize',function(e){  
+        	reAdjust();
+      });
+
+      var timeout;
+      $list = $('.list');
+      $('.scroller-right').on('mousedown', function(event) {
+         event.preventDefault();
+         timeout = setInterval(function(){
+            move = widthOfHidden();
+            move = move < -10 ? -10 : move;
+
+            if (move >= 0){
+               clearInterval(timeout);
+               return false;
+            } else {
+               $list.animate({left:"+="+move+"px"},10, 'linear');
+               }
+         }, 10);
+      }).on('mouseup mouseleave', function(event){
+         event.preventDefault();
+         clearInterval(timeout);
+      });
+
+      $('.scroller-left').on('mousedown', function(event) {
+         event.preventDefault();
+         timeout = setInterval(function(){
+            move = getLeftPosi();
+            move = move < -1 ? -10 : move;
+
+            if (move >= 0){
+               clearInterval(timeout);
+               //$list.animate({left:"0px"},300, 'linear');
+               return false;
+            } else {
+               $list.animate({left:"-="+move+"px"},10, 'linear');
+            }
+
+         }, 10);
+
+      }).on('mouseup mouseleave', function(event){
+         event.preventDefault();
+         clearInterval(timeout);
+      });
+      
+      
+         </script>
+
+	</div>
+
+
+</body>
+</html>

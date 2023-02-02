@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body th:fragment="modal">
+	<form action="/"
+		th:action="${@paths.PARAMETROS}+@{/}+${server}+@{/}+${app}+@{/}+${nomeParametro}"
+		th:method="delete">
+		<p th:utext=#{confirmarDelParametro(${nomeParametro})}></p>
+
+		<div class="modal-footer">
+			<button type="button"
+				class="btn btn-secondary modal-kontro-btn-close"
+				data-dismiss="modal" th:text=#{btnFechar}></button>
+			<button type="submit" class="btn btn-danger"
+				th:text=#{aceitarDelParametro}></button>
+		</div>
+	</form>
+</body>
+</html>

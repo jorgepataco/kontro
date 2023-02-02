@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="utf-8" />
+
+   </head>
+   <body th:fragment="content">
+      <div class="container" th:fragment="content" style="padding-top: 10px;">
+         <div class="bs-example">
+            <div class="tab-content">
+               <th:block th:each="tabelaRecvoz, iter : ${tabelasRecvoz}">
+                  <div th:class="${iter.index == 0}? 'tab-pane fade show active': 'tab-pane fade'" th:id="${tabelaRecvoz.nomeTabela}">
+                     <table th:id="tabela_+${iter.index}" class="table w-auto table-sm table-striped" style="font-size: 13.5px; min-width:1100px">
+                        <!-- Header Table -->
+                        <thead>
+                           <th:block th:each="coluna : ${tabelaRecvoz.colunas}">
+                              <th th:text=${coluna.nomeColuna}></th>
+                              <th>TYPE</th>
+                              <th>DADOS</th>
+                           </th:block>
+                        </thead>
+                        <tbody>
+                           <th:block th:each="i : ${#numbers.sequence(0, tabelaRecvoz.qtdLinhas-1, 1)}">
+                              <tr class="unselected">
+                                 <th:block th:each="j : ${#numbers.sequence(0, tabelaRecvoz.qtdColunas-1, 1)}">
+                                    <td th:text="${ tabelaRecvoz.colunas.get(j).valores.get(i) != null} ? ${tabelaRecvoz.colunas.get(j).valores.get(i)} : '(null)'" />
+                                 	<td><a th:href="@{'/tabelas/'+${server}+'/'+${app}+'/' + ${tabelaRecvoz.colunas.get(j).valores.get(i)}+'/type'}">Clique aqui</a></td>
+									<td><a th:href="@{'/tabelas/'+${server}+'/'+${app}+'/' + ${tabelaRecvoz.colunas.get(j).valores.get(i)}+'/dados'}">Clique aqui</a></td>
+                                 	
+                                 </th:block>
+                              </tr>
+                           </th:block>
+                        </tbody>
+                     </table>
+                  </div>
+               </th:block>
+            </div>
+         </div>
+         <script th:inline="javascript">
+	         
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+            
+          var table =  $('table.table').DataTable( {
+        	  "scrollY": 330,
+        	  "pageLength": 10,
+        	  "autoWidth": true,
+  				"fixedHeader": true,
+     	        "scrollX": true,
+     	    	 "dom": 'rtip',
+     	    	scrollCollapse: true
+       	    	 
+            } );
+         console.log(table);
+         </script>
+      </div>
+   </body>
+</html>

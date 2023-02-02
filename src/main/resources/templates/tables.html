@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Kontro - Aplicação Everis</title>
+
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}">
+<link th:href="@{/css/kontro.css}" rel="stylesheet" />
+<link th:href="@{/css/fixedColumns.bootstrap4.min.css}" rel="stylesheet">
+<link th:href="@{/css/fontawesome-free-5.13.1-web/css/all.css}"
+	rel="stylesheet">
+
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/dataTables.buttons.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/buttons.print.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/dataTables.select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/dataTables.select.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/js/dataTables.fixedColumns.min.js}"></script>
+</head>
+<body id="bodykontro">
+	<nav class="navbar navbar-default navbar-expand-lg navbar-light">
+		<div class="navbar-header">
+			<a class="navbar-brand" th:href="@{'/'}">KONTRO<b>NTTDATA</b></a>  	
+			<button type="button" data-target="#navbarCollapse"
+				data-toggle="collapse" class="navbar-toggle navbar-toggler ml-auto">
+				<span class="navbar-toggler-icon"></span> <span class="icon-bar"></span>
+				<span class="icon-bar"></span> <span class="icon-bar"></span>
+			</button>
+		</div>
+
+		<div id="navbarCollapse"
+			class="collapse navbar-collapse justify-content-start"></div>
+
+		<form class="form-inline" th:action="@{/resultado}" method="get">
+			<div class="form-group mb-2">
+				<label for="aplicacao">Aplicação: </label> <select
+					class="form-control select-search-table" id="aplicacao" th:name="app">
+					<option>Selecione a aplicação</option>
+					<option th:each="app, iter: ${apps}"
+						th:if="${app.servicos.size() > 0}" th:value="${app.nome}"
+						th:text="${app.label}"></option>
+				</select>
+			</div>
+			<div class="form-group mb-2">
+				<label for="servers">Ambiente: </label> <select
+					class="form-control select-search-table" id="servers" name="server">
+					<option>Selecione o ambiente</option>
+					<option th:value="hml">Homologação</option>
+					<option th:value="prd">Produção</option>
+				</select>
+			</div>
+			<button id="btn-busca-table" class="btn btn-color-default mb-2" type="submit">Buscar</button>
+		</form>
+	</nav>
+
+	<div th:replace="${view_service} :: content"></div>
+	<div th:replace="fragments/footer :: footer"></div>
+
+	<script type="text/javascript" th:src="@{/js/kontro.js}"></script>
+</body>
+</html>

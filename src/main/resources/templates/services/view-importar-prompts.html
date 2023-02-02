@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<div class="file-loading">
+		<input id="input-id" type="file" name="file" class="file"
+			th:data-upload-url="${@paths.PROMPTS+@paths.UPLOAD}">
+	</div>
+
+	<script th:inline="javascript">
+
+	$("#input-id").fileinput({
+		language:"pt-BR",
+		maxFilePreviewSize: 10240,
+	    showRemove: false,
+	    showClose: false,
+	    uploadAsync:false,
+	    showUpload: true,
+	    showDownload: false,
+	    showZoom: false,
+	    showDrag: false,
+	    allowedFileExtensions: ["xls", "xlsx"]
+	});
+
+	$('#input-id').on('fileuploaded', function(event, previewId, index, fileId) {
+	    console.log('File uploaded', previewId, index, fileId);
+	});
+
+	$('#input-id').on('filebatchuploadsuccess', function(event, data) {
+	    var form = data.form, files = data.files, extra = data.extra,
+	        response = data.response, reader = data.reader;
+	    table.ajax.reload();
+	});
+	</script>
+</body>
+</html>

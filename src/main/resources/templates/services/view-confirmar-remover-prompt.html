@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<form action="/"
+		th:action="${@paths.PROMPTS}+@{/}+${promptDTO.aplicacao}+@{/}+${promptDTO.nome}"
+		th:method="delete">
+		<p th:utext="#{confirmarDelPrompt(${promptDTO.nome})}">
+		<div class="modal-footer">
+			<button type="button"
+				class="btn btn-secondary modal-kontro-btn-close"
+				data-dismiss="modal" th:text="#{btnCancelar}"></button>
+
+			<button type="submit" class="btn btn-danger"
+				th:text="#{aceitarDelPrompt}"></button>
+		</div>
+	</form>
+</body>
+</html>

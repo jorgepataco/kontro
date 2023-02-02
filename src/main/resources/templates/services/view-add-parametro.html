@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<div>
+		<form id="form-parametro" th:object="${parametro}" class="form-kontro"
+			th:data-type="${type}"
+			data-ajax-save-form="onAjaxSaveParametro"
+			th:data-url="${@paths.PARAMETROS}+@{/}+${server}+@{/}+${app}">
+			<div class="form-group row mb-2">
+				<label for="name" class="col-sm-2 col-form-label font-weight-bold"
+					th:text="#{formLabelNomeParametro}"></label>
+
+				<div class="col-sm-9">
+					<input type="text" th:field="*{name}" class="form-control"></input>
+
+					<div class="alert alert-dark" th:if="${#fields.hasErrors('name')}">
+						<strong th:text="#{strongThError}"></strong> <span
+							th:errors="*{name}"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row mb-2">
+				<label for="value" class="col-sm-2 col-form-label font-weight-bold"
+					th:text="#{formLabelValorParametro}"></label>
+
+				<div class="col-sm-9">
+					<textarea class="form-control" th:field="*{value}" id="value"
+						name="conteudo" placeholder="Conteudo parâmetro"
+						aria-describedby="inputConteudoPrompt" required="required"> </textarea>
+
+					<div class="alert alert-dark" th:if="${#fields.hasErrors('value')}">
+						<strong th:text="#{strongThError}"></strong> <span
+							th:errors="*{value}"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer d-flex">
+				<div id="loading-save" class="align-items-center mb-0 mr-auto p-2 loader">
+					<strong th:text="#{loadingMsgSaveParametro}"></strong>
+					<div class="spinner-border ml-auto" role="status"
+						aria-hidden="true"></div>
+				</div>
+				<div th:if="${statusTransaction == 'success'}" class="alert alert-success mb-0 mr-auto p-2">
+					<span class="fa fa-check-circle"></span> <span th:text="#{alertMsgSucessoSaveParametro}"></span> 
+				</div>
+				<div class="justify-content-end">
+					<button type="button"
+						class="btn btn-secondary modal-kontro-btn-close"
+						data-dismiss="modal" th:text="#{btnCancelar}"></button>
+
+					<button type="submit" class="btn btn-primary"
+						th:text="#{btnSalvar}"></button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script th:inline="javascript">
+		var type = [[${type}]];
+		if(type=='PUT'){
+			$('#name').prop('readonly', true);
+		}
+
+		var loading = $("#loading-save").hide();
+
+		var statusTransaction = [[${statusTransaction}]];
+
+		if(statusTransaction == 'success'){
+			desabilitarForm($('#form-parametro'));
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta name="_jwt" content="prompts" />
+</head>
+
+<body th:fragment="content">
+	<div class="container" style="padding-top: 10px;">
+		<div>
+			<div class="navbar-text pull-left">
+				<button type="button" class="btn btn-outline-dark btn-abrir-modal"
+					th:data-modal-dir="addPrompt"
+					th:data-modal-url="${@paths.PROMPTS+@paths.ADD}+@{/}+${app}"
+					th:data-modal-app="${app}">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i> <span
+						th:text="#{btnAddPrompt}"></span>
+				</button>
+				<button type="button" class="btn btn-outline-dark btn-abrir-modal"
+					th:data-modal-dir="importPromtps"
+					th:data-modal-url="${@paths.PROMPTS+@paths.IMPORTAR}">
+					<i class="fa fa-file-excel-o" aria-hidden="true"></i> <span
+						th:text="#{btnImportarPrompt}"></span>
+				</button>
+				<a type="button" href="#"
+					th:href="${@paths.PROMPTS+@paths.DOWNLOAD}+@{/}+${app}"
+					class="btn btn-outline-dark"><i class="fa fa-download"
+					aria-hidden="true"></i> <span th:text="#{btnExportarPrompt}"></span></a>
+			</div>
+			<div
+				th:replace="${@paths.COMPONENTS} :: ${@fragments.FILTRAR_TABELA}"></div>
+		</div>
+
+		<table id="prompts-table" data-order="[[ 3, &quot;desc&quot; ]]"
+			data-processing="true" data-server-side="true" data-pageLength="10"
+			data-scroll-y="350" data-scroll-x="true" data-dom="rt<'bottom'ip>"
+			class="table w-auto table-sm table-striped"
+			style="font-size: 13.5px; padding-top: 10px;">
+			<thead>
+				<tr>
+					<th th:text="#{headerCellNomePrompt}"></th>
+					<th th:text="#{headerCellConteudoParametro}"></th>
+					<th th:text="#{headerCellCategoriaParametro}"></th>
+					<th th:text="#{headerCellDtAttParametro}"></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+
+		<script th:inline="javascript">
+		 	var editarPrompt = [[#{titleBtnEditarPrompt}]];
+			var removerPrompt = [[#{titleBtnDeletarPrompt}]];
+			var urlEditarPrpt = [[${@paths.PROMPTS+@paths.EDIT}+@{/}+${app}]];
+			var urlDeletePrpt = [[${@paths.PROMPTS+@paths.DELETE}+@{/}+${app}]];
+		</script>
+
+		<script type="text/javascript" th:src="@{/js/view-prompts.js}"></script>
+	</div>
+</body>
+</html>

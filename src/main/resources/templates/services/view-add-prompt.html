@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<div>
+		<form id="form-prompt" th:object="${promptDTO}" class="form-kontro"
+			th:data-type="${type}" th:data-url="@{/prompts/}+${app}"
+			data-ajax-save-form="onAjaxSavePrompt">
+			<div class="form-group row mb-2">
+				<label for="nome" class="col-sm-2 col-form-label font-weight-bold"
+					th:text="#{formLabelNomePrompt}"></label>
+
+				<div class="col-sm-9">
+					<input type="text" th:field="*{nome}" class="form-control"></input>
+
+					<div class="alert alert-dark has-error" th:if="${#fields.hasErrors('nome')}">
+						<strong th:text="#{strongThError}"></strong> <span
+							th:errors="*{nome}"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row mb-2">
+				<label for="conteudo"
+					class="col-sm-2 col-form-label font-weight-bold"
+					th:text="#{formLabelConteudoPrompt}"></label>
+				<div class="col-sm-9">
+					<textarea class="form-control" th:field="*{conteudo}" id="conteudo"
+						name="conteudo" th:placeholder="#{formPlaceHolderConteudoPrompt}"
+						aria-describedby="inputConteudoPrompt" required="required"> </textarea>
+
+					<div class="alert alert-dark has-error"
+						th:if="${#fields.hasErrors('conteudo')}">
+						<strong th:text="#{strongThError}"></strong> <span
+							th:errors="*{conteudo}"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row mb-2">
+				<label for="categoria"
+					class="col-sm-2 col-form-label font-weight-bold"
+					th:text="#{formLabelCategoriaPrompt}"></label>
+
+				<div class="col-sm-9">
+					<select required="required"
+						class="form-control selectpicker btn-add-prompt"
+						th:field="*{categoria}" id="categoria" name="categoria">
+						<option value="" th:text="#{formSelectCategoriaPrompt}"></option>
+						<option th:each="categoria : ${categorias}"
+							th:value="${categoria.nome}" th:text="${categoria.nome}">
+						</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row mb-2">
+				<label for="aplicacao"
+					class="col-sm-2 col-form-label font-weight-bold"
+					th:text="#{formLabelAplicacaoPrompt}"></label>
+
+				<div class="col-sm-9">
+					<input type="text" th:field="*{aplicacao}" readonly="readonly"
+						class="form-control" id="aplicacao" name="aplicacao"
+						aria-describedby="inputNomePrompt" required="required">
+				</div>
+			</div>
+
+			<div class="modal-footer d-flex">
+
+				<div id="loading-save" class="align-items-center mb-0 mr-auto p-2 loader">
+					<strong th:text="#{loadingMsgSavePrompt}"></strong>
+					<div class="spinner-border ml-auto" role="status"
+						aria-hidden="true"></div>
+				</div>
+				
+				<div th:if="${statusTransaction == 'success'}" class="alert alert-success mb-0 mr-auto p-2">
+					<span class="fa fa-check-circle"></span> <span th:text="#{alertMsgSucessoSavePrompt}"></span> 
+				</div>
+				
+				<div class="justify-content-end">
+					<button type="button"
+						class="btn btn-secondary modal-kontro-btn-close"
+						data-dismiss="modal" th:text="#{btnCancelar}"></button>
+
+					<button type="submit" class="btn btn-primary"
+						th:text="#{btnSalvar}"></button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script th:inline="javascript">
+		var type = /*[[${type}]]*/ "";
+		
+		if(type=='PUT'){
+			$('#nome').prop('readonly', true);
+		}
+		var loading = $("#loading-save").hide();
+
+		var statusTransaction = /*[[${statusTransaction}]]*/ "";
+			
+		if(statusTransaction == 'success'){
+			desabilitarForm($('#form-prompt'));
+		}
+	</script>
+</body>
+</html>

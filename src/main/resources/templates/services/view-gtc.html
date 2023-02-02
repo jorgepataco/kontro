@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="utf-8" />
+      <style>
+         .bs-example{
+         margin: 20px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container" th:fragment="content" style="padding-top: 10px;">
+           
+                     <table Class="table-bordered w-auto table-sm" style="font-size: 13.5px; min-width:1100px">
+                        <!-- Header Table -->
+                        <thead>
+                           <th>Rotinas</th>
+                           <th>Condições</th>
+                           <th>Ações</th>
+                           <th>Prompt</th>
+                           <th>Conteudo</th>
+                        </thead>
+                        <tbody>
+                              <tr>
+                                    <td rowspan="6">Teste1</td>
+                                    <td rowspan="6">Teste5</td>
+                                    
+                              </tr>
+                              <tr>
+                              	<td class="ctx-menu-apto cen-prompt" data-pos-acao="0">Teste2</td>
+                              	<td class="ctx-menu-apto cen-prompt" data-pos-acao="0">Teste9</td>
+                              </tr>
+                              <tr>
+                              	<td class="ctx-menu-apto cen-acao" data-pos-acao="1" rowspan="2">Teste10</td>
+                              	<td class="ctx-menu-apto cen-prompt">Teste11</td>
+                              	<td class="ctx-menu-apto cen-prompt">Teste12</td>
+                              </tr>
+                             <tr>
+                              	<td class="ctx-menu-apto cen-prompt">Teste13</td>
+                              	<td class="ctx-menu-apto cen-prompt">Teste14</td>
+                              </tr>
+                              <tr>
+                              	<td class="ctx-menu-apto cen-acao" data-pos-acao="2" rowspan="2">Teste13</td>
+                              	<td class="ctx-menu-apto cen-prompt">Teste11</td>
+                              	<td class="ctx-menu-apto cen-prompt">Teste12</td>
+                              </tr>
+                             <tr>
+                              	<td class="ctx-menu-apto cen-prompt">Teste13</td>
+                              	<td class="ctx-menu-apto cen-prompt">Teste14</td>
+                              </tr>
+                        </tbody>
+                     </table>
+                     
+                     
+                     
+                     <table th:id="eventCount0" Class="table-bordered w-auto table-sm" style="font-size: 13.5px; min-width:1100px">
+                        <!-- Header Table -->
+                        <thead>
+                           <th>teste</th>
+                        </thead>
+                        <tbody >
+                              <tr th:each="teste, iter: ${testes}">
+                                    <td th:text="${teste}"></td>
+                              </tr>
+                        </tbody>
+                     </table>
+                     
+                     <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+				         <a class="dropdown-item context-op-acao d-none" href="#">Nova ação acima</a>
+				         <a class="dropdown-item context-op-acao d-none" href="#">Nova ação abaixo</a>
+				         <a class="dropdown-item context-op-acao d-none" href="#">Remover ação</a>
+				         <a class="dropdown-item context-op-prompt d-none" href="#">Novo prompt acima</a>
+				         <a class="dropdown-item context-op-prompt d-none" href="#">Novo prompt abaixo</a>
+				         <a class="dropdown-item context-op-prompt d-none" href="#">Remover prompt</a>
+				     </div>
+				     
+				     <a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-mode="" data-title="Enter username">superuser</a>
+  
+  <script th:inline="javascript">
+  
+  $.get("descerAcao/0/2", function(data) { // get from controller
+	 // console.log([[${teste}]]);
+     $("#eventCount0").replaceWith(); // update snippet of page
+  });
+  </script>
+                  </div>
+   </body>
+   
+</html>
